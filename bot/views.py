@@ -14,7 +14,7 @@ from linebot.models import (
 )
 import os
 import time, datetime
-from .util import texttool
+from .util import texttool, jieba_validation
 from django.views.generic import ListView
 #parameter for global count
 count = 0
@@ -51,7 +51,8 @@ def textvalidation(request):
             text_by_user = form.cleaned_data['usertext']
             date_of_upload = str(datetime.datetime.today())
             #process the text to judge is it is legal
-            result = texttool(text_by_user)
+            #result = texttool(text_by_user)
+            result = jieba_validation(text_by_user)
             txt = Textupload(usertext=text_by_user, result=result, date_of_upload = date_of_upload)
             txt.save()
 
