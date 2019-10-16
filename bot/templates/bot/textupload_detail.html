@@ -1,0 +1,54 @@
+{% extends "base_generic_db.html" %}
+{% block title %}<title>辨識結果</title>{% endblock %}
+
+{% block sidebar %}
+  <ul class="nav nav-sidebar">
+    <li class="active"><a href="{% url 'textupload_list' %}"><i class="fas fa-list fa-lg"></i>&nbsp 所有辨識</a></li>
+    <li><a href="{% url 'inquiry_list' %}"><i class="fas fa-list fa-lg"></i>&nbsp 詢問清單</a></li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-header">辨識結果</h1>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>編號</th>
+              <th>時間</th>
+              <th>結果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{textupload.pk}}</td>
+              <td>{{textupload.date_of_upload}}</td>
+              {% if textupload.result == '0' %}
+                <td>合格</td>
+              {% else %}
+                <td>違規</td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>內容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{textupload.usertext}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><a href="{% url 'textupload_list' %}">回所有辨識清單</a></p>
+    </div>
+{% endblock %}

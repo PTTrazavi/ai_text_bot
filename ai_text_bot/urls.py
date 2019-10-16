@@ -22,6 +22,7 @@ from django.conf.urls.static import static # new
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bot/', include('bot.urls')),
+    path('accounts/', include('django.contrib.auth.urls')), # for site authentication
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

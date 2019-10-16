@@ -55,7 +55,7 @@ ROOT_URLCONF = 'ai_text_bot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,6 +114,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/bot/Alist/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -121,9 +123,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'bot/static')
 
-LINE_CHANNEL_ACCESS_TOKEN = "T3nkEQ/1hzbITjrvBlHJzeX2NYrjE4G5Gu3ALjfhDcKjIZcQF7Oz2ju2MZn4FYer7jSEmuMdfF5oGBiF5ZPkgJxEYZuWvr7Oye2q8/f+LR29x4+EvBKpAWtDrVQQDgsGziJ2WYv8upIUkFOgvrtrPwdB04t89/1O/w1cDnyilFU="
+LINE_CHANNEL_ACCESS_TOKEN = "GTGZPwTG/k2RwKkg+iXA0kizg5EDfmUcQYRCjIcwoJ4dcwjA8uIPcEBPHssohhvsyvbjrkPJjactOURSmzMhDLOiBg4K6cLs4jnWtkbJwQetTfi4IHK9Pc6gm/6FEUiwAWxHrIXhVa6O91zEhgJLngdB04t89/1O/w1cDnyilFU="
 
-LINE_CHANNEL_SECRET = "7a82f7701fc280fa789eec2f3a637444"
+LINE_CHANNEL_SECRET = "f28bbd4ccd25789ec1bcb9fdc1bda65a"
 
 # insta_project/settings.py
 MEDIA_URL = '/media/'

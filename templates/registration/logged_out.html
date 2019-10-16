@@ -1,0 +1,9 @@
+{% extends "base_generic_db.html" %}
+{% block title %}<title>登出</title>{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+  <h2>已登出</h2>
+  <a href="{% url 'login'%}">按此再次登入</a>
+{% endblock %}

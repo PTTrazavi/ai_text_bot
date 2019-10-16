@@ -1,0 +1,45 @@
+{% extends "base_generic_db.html" %}
+{% block title %}<title>詢問清單</title>{% endblock %}
+
+{% block sidebar %}
+  <ul class="nav nav-sidebar">
+    <li><a href="{% url 'textupload_list' %}"><i class="fas fa-list fa-lg"></i>&nbsp 所有辨識</a></li>
+    <li class="active"><a href="#"><i class="fas fa-list fa-lg"></i>&nbsp 詢問清單</a></li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-header">詢問清單</h1>
+    <div class="row">
+      {% if inquiry_list %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>編號</th>
+              <th>時間</th>
+              <th>公司</th>
+              <th>聯絡人</th>
+              <th>內容</th>
+              <th>訊息</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for inquiry in inquiry_list %}
+            <tr>
+              <td><a href="{{inquiry.get_absolute_url}}">{{inquiry.pk}}</a></td>
+              <td>{{inquiry.date_of_inquiry}}</td>
+              <td>{{inquiry.company}}</td>
+              <td>{{inquiry.contact}}</td>
+              <td>{{inquiry.usertext|slice:"0:15"}} ...</td>
+              <td>{{inquiry.message|slice:"0:15"}}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <p>沒有辨識結果</p>
+      {% endif %}
+    </div>
+{% endblock %}

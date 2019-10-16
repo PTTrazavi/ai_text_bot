@@ -118,7 +118,4 @@ def jieba_validation(input_text):
     # 預測的答案
     #
     y_pred_class = pred_data
-    if y_pred_class[0] == 0:
-        return "ok"
-    else:
-        return "no"
+    return y_pred_class[0]

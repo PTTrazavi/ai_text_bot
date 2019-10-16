@@ -1,0 +1,89 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>AI詞句判斷</title>{% endblock %}
+{% block content %}
+  <h1 class="logo cursive">辨識結果</h1>
+  <!--  H1 can have 2 designs: "logo" and "logo cursive"           -->
+          <div class="content">
+              <div class="subscribe">
+                  <div class="row">
+                      <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
+                        <div class="table-responsive">
+                          <table class="table table-striped"><tbody><tr>
+                            <td>{{original}}</td>
+                          </tr></tbody></table>
+                        </div>
+                      </div>
+                  </div>
+                  {% if result == '0' %}
+                    <div class="row">
+                      <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
+                        {% load static %}
+                        <div class="table-responsive">
+                          <table class="table table-striped"><tbody><tr>
+                            <td><img src="{% static 'imgs/green.jpg' %}" alt="Good" /></td>
+                          </tr></tbody></table>
+                        </div>
+                      </div>
+                    </div>
+                  {% elif result == '1' %}
+                    <div class="row">
+                      <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
+                        <div class="table-responsive">
+                          <table class="table table-striped"><tbody><tr>
+                            <td><img src="{% static 'imgs/red.jpg' %}" alt="Not Good" /></td>
+                            <td>辨識結果：{{rate}}%</td>
+                          </tr></tbody></table>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
+                      <div class="table-responsive">
+                        <table class="table table-striped"><tbody><tr><td>
+                          親愛的用戶您好：<br/>
+                          {% if result == '1' %}
+                          以上偵測結果註記如下，以下資料僅供參考。<br/>
+                          「<span style="color:red;">紅燈</span>」：偵測結果在以往違規案例中涉及相關誇大不實用語或有誤導趨向之意。<br/>
+                          「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
+                          {% endif %}
+                          <br/>
+                          辨識結果如下：<br/>
+                          {% if result == '0' %}
+                            100% - 95% => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
+                          {% elif result == '1' %}
+                            85%  以下 => 「<span style="color:red;">危險!! </span>」您的廣告文字中已在違規案例中出現過，請務必特別小心。<br/>
+                          {% endif %}
+                          <br/>
+                          關於您的廣告文字辨識後結果，如有任何疑問或需進一步專業諮詢，歡迎您來電洽詢或來信詢問。<br/>
+                          電話:(02)23771858分機○○○<br/>
+                          信箱: angel.lin@zhongyinlawyer.com.tw<br/>
+                        </td></tr></tbody></table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
+                        <form action="{% url 'inquiry' %}" method="post" class="form-inline formImg" role="form">
+                            {% csrf_token %}
+                            <input type="hidden" name="result" value="{{original}}">
+                          <button type="submit" class="btn btn-info btn-fill submitImg">網站詢問</button>
+                          <br/><br/>
+                        </form>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+          <script>
+              $(document).ready(function () {
+                  $(".formImg").submit(function (e) {
+                      //disable the submit button
+                      $(".submitImg").attr("disabled", true);
+                      return true;
+                  });
+              });
+          </script>
+
+{% endblock %}

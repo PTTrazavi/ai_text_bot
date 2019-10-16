@@ -732,7 +732,7 @@ h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
     position: relative;
     text-align: center;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.33);
-    margin-top: 150px;
+    margin-top: 80px;
     z-index: 3;
 }
 .main .logo.cursive{
@@ -817,7 +817,7 @@ h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
 }
 @media (min-width:991px){
     .main .subscribe .form-group{
-        width: 190px;
+        width: 300px; /* 190px */
     }
     .footer{
         position: fixed;
@@ -826,7 +826,7 @@ h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
 }
 @media (min-width:1200px){
     .main .subscribe .form-group{
-        width: 250px;
+        width: 350px; /* 250px */
     }
 }
 
