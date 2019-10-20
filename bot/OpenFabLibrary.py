@@ -141,14 +141,14 @@ def AppendKeywordCheck(input_df):
 
         # 列印出含有違規字詞的廣告
         if len(illegal_word_list) != 0:
-            print("---------------------------------------------------------------------------")
-            print("ID:[{0}], class:({1}) 內容:{2}".format(index, row['class'], row['sentence']))
-            print("違法字詞: {0}".format(illegal_word_list))
+            #print("---------------------------------------------------------------------------")
+            #print("ID:[{0}], class:({1}) 內容:{2}".format(index, row['class'], row['sentence']))
+            #print("違法字詞: {0}".format(illegal_word_list))
 
             # 設定該class為違法廣告
             keyword_flag[index] = 1  # VIOLATE_CLASS
 
-    return keyword_flag
+    return keyword_flag, illegal_word_list
 
 
 def PlotWordCloud(words_source):

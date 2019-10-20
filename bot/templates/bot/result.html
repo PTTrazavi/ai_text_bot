@@ -9,7 +9,7 @@
                       <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
                         <div class="table-responsive">
                           <table class="table table-striped"><tbody><tr>
-                            <td>{{original}}</td>
+                            <td>{{original|safe}}</td>
                           </tr></tbody></table>
                         </div>
                       </div>
@@ -66,7 +66,8 @@
                     <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
                         <form action="{% url 'inquiry' %}" method="post" class="form-inline formImg" role="form">
                             {% csrf_token %}
-                            <input type="hidden" name="result" value="{{original}}">
+                            <input type="hidden" name="result" value="{{original_nc}}">
+                            <input type="hidden" name="keywords" value="{{keywords}}">
                           <button type="submit" class="btn btn-info btn-fill submitImg">網站詢問</button>
                           <br/><br/>
                         </form>

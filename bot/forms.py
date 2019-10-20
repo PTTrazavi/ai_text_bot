@@ -31,10 +31,13 @@ class InquiryForm(forms.Form):
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
     usertext = forms.CharField(label="辨識結果", label_suffix="：", initial="",
                                 strip=True, min_length=1,
-                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':6, 'cols':10}))
+                                widget=forms.Textarea(attrs={'readonly':True,'class':'form-control transparent','rows':6, 'cols':10}))
     message = forms.CharField(label="訊息內容", label_suffix="：", initial="",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':6, 'cols':10}))
+    #temp string to store keywords
+    keywords = forms.CharField(required=True, widget=forms.HiddenInput())
+
 
     def clean_company(self):
         data = self.cleaned_data['company']
@@ -53,4 +56,7 @@ class InquiryForm(forms.Form):
         return data
     def clean_message(self):
         data = self.cleaned_data['message']
+        return data
+    def clean_keywords(self):
+        data = self.cleaned_data['keywords']
         return data

@@ -39,24 +39,38 @@ def result(request):
             date_of_upload = str(datetime.datetime.today())
             #process the text to judge if it is legal
             #result = texttool(text_by_user)
-            result = jieba_validation(text_by_user)
+            result, rate, keywords = jieba_validation(text_by_user)
+            print(keywords)
+            #add red keywords
+            text_by_user_nc = text_by_user
+            r_b = '<span style="color:red;">'
+            r_a = '</span>'
+            for word in keywords:
+                text_by_user = text_by_user.replace(word, r_b + word + r_a)
+
             txt = Textupload(usertext=text_by_user, result=str(result), date_of_upload = date_of_upload)
             txt.save()
+
 
             content = {
                 'original': txt.usertext,
                 'result': txt.result,
-                'rate': '80',
+                'rate': round(rate * 100, 2),
+                'original_nc': text_by_user_nc,
+                'keywords': str(keywords).replace("'","").replace(" ",""), #temp string for keywords
             }
             return render(request, 'bot/result.html', content)
 
 #validation result
 from .models import Inquiry
 from .forms import InquiryForm
+from django.utils.safestring import SafeString
 def inquiry(request):
     if request.method == 'POST':
         result = request.POST.get('result')
-        form = InquiryForm(initial={'usertext':result})
+        keywords = request.POST.get('keywords')
+
+        form = InquiryForm(initial={'usertext':result, 'keywords': keywords})
 
         content = {
             'form': form,
@@ -76,6 +90,16 @@ def line(request):
             usertext = form.cleaned_data['usertext']
             message = form.cleaned_data['message']
 
+            #red words process
+            usertext_nc = usertext
+            keywords = form.cleaned_data['keywords']
+            keywords = keywords[1:-1].split(',')
+            r_b = '<span style="color:red;">'
+            r_a = '</span>'
+            for word in keywords:
+                usertext = usertext.replace(word, r_b + word + r_a)
+            #red words process end here
+
             date_of_inquiry = str(datetime.datetime.today())
 
             inquiry = Inquiry(company = company, contact = contact, phone = phone,
@@ -83,7 +107,7 @@ def line(request):
                                 date_of_inquiry = date_of_inquiry)
             inquiry.save()
             #make message to send by LINE
-            LINE = str(company + "的" + contact + "在網站上詢問了問題。內容：" + usertext + " 訊息：" + message)
+            LINE = str(company + "的" + contact + "在網站上詢問了問題。\n\n內容：" + usertext_nc + "\n\n訊息：" + message)
             line_bot_api.broadcast([TextSendMessage(text=LINE)])
 
         return render(request, 'bot/line.html')

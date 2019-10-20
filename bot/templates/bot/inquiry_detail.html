@@ -3,7 +3,7 @@
 
 {% block sidebar %}
   <ul class="nav nav-sidebar">
-    <li><a href="{% url 'inquiry_list' %}"><i class="fas fa-list fa-lg"></i>&nbsp 所有辨識</a></li>
+    <li><a href="{% url 'textupload_list' %}"><i class="fas fa-list fa-lg"></i>&nbsp 所有辨識</a></li>
     <li class="active"><a href="{% url 'inquiry_list' %}"><i class="fas fa-list fa-lg"></i>&nbsp 詢問清單</a></li>
   </ul>
 {% endblock %}
@@ -46,7 +46,7 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{inquiry.usertext}}</td>
+              <td>{{inquiry.usertext|safe}}</td>
             </tr>
           </tbody>
         </table>
