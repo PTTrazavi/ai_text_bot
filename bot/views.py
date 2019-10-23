@@ -112,6 +112,22 @@ def line(request):
 
         return render(request, 'bot/line.html')
 
+#pdf generator
+from .util import render_to_pdf
+def pdf(request):
+    original = request.POST.get('original')
+    result = request.POST.get('result')
+    rate = request.POST.get('rate')
+
+    data = {
+        'today': datetime.date.today(),
+        'original': original,
+        'result': result,
+        'rate': rate,
+    }
+    pdf = render_to_pdf('bot/pdf.html', data)
+    return HttpResponse(pdf, content_type='application/pdf')
+
 #####backend site views from here #####
 #all_list
 from django.views import generic

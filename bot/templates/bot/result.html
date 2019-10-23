@@ -21,6 +21,7 @@
                         <div class="table-responsive">
                           <table class="table table-striped"><tbody><tr>
                             <td><img src="{% static 'imgs/green.jpg' %}" alt="Good" /></td>
+                            <td>辨識結果：{{rate}}%</td>
                           </tr></tbody></table>
                         </div>
                       </div>
@@ -50,9 +51,9 @@
                           <br/>
                           辨識結果如下：<br/>
                           {% if result == '0' %}
-                            100% - 95% => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
+                            70%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
                           {% elif result == '1' %}
-                            85%  以下 => 「<span style="color:red;">危險!! </span>」您的廣告文字中已在違規案例中出現過，請務必特別小心。<br/>
+                            70%  以上 => 「<span style="color:red;">危險!! </span>」您的廣告文字中已在違規案例中出現過，請務必特別小心。<br/>
                           {% endif %}
                           <br/>
                           關於您的廣告文字辨識後結果，如有任何疑問或需進一步專業諮詢，歡迎您來電洽詢或來信詢問。<br/>
@@ -69,6 +70,14 @@
                             <input type="hidden" name="result" value="{{original_nc}}">
                             <input type="hidden" name="keywords" value="{{keywords}}">
                           <button type="submit" class="btn btn-info btn-fill submitImg">網站詢問</button>
+                          <br/><br/>
+                        </form>
+                        <form action="{% url 'pdf' %}" method="post" class="form-inline" role="form">
+                            {% csrf_token %}
+                            <input type="hidden" name="original" value="{{original}}">
+                            <input type="hidden" name="result" value="{{result}}">
+                            <input type="hidden" name="rate" value="{{rate}}">
+                          <button type="submit" class="btn btn-success btn-fill">下載PDF檔</button>
                           <br/><br/>
                         </form>
                     </div>

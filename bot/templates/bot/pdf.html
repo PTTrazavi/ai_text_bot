@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>辨識結果報告</title>
+        <style type="text/css">
+            @font-face {
+              font-family: Times;
+              /* src: url("/home/r94943024/apps/django/django_projects/ai_text_bot/mingliu.ttc"); */
+              src: url("/Users/JeremyLai/django_projects/ai_text_bot/mingliu.ttc");
+            }
+            body {
+                font-weight: 200;
+                font-size: 14px;
+                font-family: Times;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+        </style>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <p class='title'>辨識結果報告</p>
+            </div>
+        <div>
+        <div class='details'>
+            日期: {{today}}<br/>
+            廣告內容: {{original|safe}}<br/>
+            {% if result == '0' %}
+              {% load static %}
+              結果:  合格<br/>
+            {% elif result == '1' %}
+              結果:  違規<br/>
+            {% endif %}
+            辨識結果: {{rate}}%<br/>
+            <hr class='hrItem' />
+            親愛的用戶您好：<br/>
+            {% if result == '1' %}
+              以上偵測結果註記如下，以下資料僅供參考。<br/>
+              「<span style="color:red;">紅燈</span>」：偵測結果在以往違規案例中涉及相關誇大不實用語或有誤導趨向之意。<br/>
+              「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
+            {% endif %}
+            <br/>
+            辨識結果如下：<br/>
+            {% if result == '0' %}
+              70%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
+            {% elif result == '1' %}
+              70%  以上 => 「<span style="color:red;">危險!! </span>」您的廣告文字中已在違規案例中出現過，請務必特別小心。<br/>
+            {% endif %}
+            <br/>
+            關於您的廣告文字辨識後結果，如有任何疑問或需進一步專業諮詢，歡迎您來電洽詢或來信詢問。<br/>
+            電話:(02)23771858分機○○○<br/>
+            信箱: angel.lin@zhongyinlawyer.com.tw<br/>
+            <hr class='hrItem' />
+        </div>
+    </div>
+    </body>
+</html>
