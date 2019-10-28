@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
     <head>
         <title>辨識結果報告</title>
@@ -51,9 +51,10 @@
         <div>
         <div class='details'>
             日期: {{today}}<br/>
-            廣告內容: {{original|safe}}<br/>
+            廣告內容:<br/>
+            {% for item in original %} {{item|safe}}<br/> {% endfor %}
+            <br/>
             {% if result == '0' %}
-              {% load static %}
               結果:  合格<br/>
             {% elif result == '1' %}
               結果:  違規<br/>

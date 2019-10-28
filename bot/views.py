@@ -40,7 +40,6 @@ def result(request):
             #process the text to judge if it is legal
             #result = texttool(text_by_user)
             result, rate, keywords = jieba_validation(text_by_user)
-            print(keywords)
             #add red keywords
             text_by_user_nc = text_by_user
             r_b = '<span style="color:red;">'
@@ -50,7 +49,6 @@ def result(request):
 
             txt = Textupload(usertext=text_by_user, result=str(result), date_of_upload = date_of_upload)
             txt.save()
-
 
             content = {
                 'original': txt.usertext,
@@ -118,6 +116,18 @@ def pdf(request):
     original = request.POST.get('original')
     result = request.POST.get('result')
     rate = request.POST.get('rate')
+    keywords = request.POST.get('keywords')
+    #split original
+    original = [original[i:i+40] for i in range(0,len(original), 40)]
+    #red words process
+
+    if len(keywords) > 2:
+        keywords = keywords[1:-1].split(',')
+        r_b = '<span style="color:red;">'
+        r_a = '</span>'
+        for word in keywords:
+            for key, value in enumerate(original):
+                original[key] = value.replace(word, r_b + word + r_a)
 
     data = {
         'today': datetime.date.today(),

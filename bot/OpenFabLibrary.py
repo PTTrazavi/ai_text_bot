@@ -211,7 +211,7 @@ def plot_confusion_matrix(cm, classes,
 
     print(cm)
 
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(8,4))
     #rcParams['figure.figsize'] = (8.0, 4.0)
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)

@@ -74,7 +74,8 @@
                         </form>
                         <form action="{% url 'pdf' %}" method="post" class="form-inline" role="form">
                             {% csrf_token %}
-                            <input type="hidden" name="original" value="{{original}}">
+                            <input type="hidden" name="original" value="{{original_nc}}">
+                            <input type="hidden" name="keywords" value="{{keywords}}">
                             <input type="hidden" name="result" value="{{result}}">
                             <input type="hidden" name="rate" value="{{rate}}">
                           <button type="submit" class="btn btn-success btn-fill">下載PDF檔</button>
