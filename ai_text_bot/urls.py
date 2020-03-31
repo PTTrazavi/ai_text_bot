@@ -22,7 +22,13 @@ from django.conf.urls.static import static # new
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bot/', include('bot.urls')),
+    path('engbot/', include('engbot.urls')),
     path('accounts/', include('django.contrib.auth.urls')), # for site authentication
+]
+#Add URL maps to redirect the base URL to our application
+from django.views.generic import RedirectView
+urlpatterns += [
+    path('', RedirectView.as_view(url='/bot/validation')),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

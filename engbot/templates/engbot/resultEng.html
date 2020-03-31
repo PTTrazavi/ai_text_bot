@@ -1,8 +1,15 @@
 {% extends "base_generic.html" %}
-{% block title %}<title>AI詞句判斷</title>{% endblock %}
+{% block title %}<title>AI Validation</title>{% endblock %}
+{% block navbar %}
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'text_validationEng' %}"><i class="fas fa-home fa-lg"></i>Home</a></li>
+  </ul>
+</div><!-- /.navbar-collapse -->
+{% endblock %}
 {% block content %}
   <h1 class="logo cursive">FAIR</h1>
-  <h1 class="logo cursive">AI自動辨識違規廣告之評估報告</h1>
+  <h1 class="logo cursive">AI Advertisement Legality Validation Report</h1>
   <!--  H1 can have 2 designs: "logo" and "logo cursive"           -->
           <div class="content">
               <div class="subscribe">
@@ -22,7 +29,7 @@
                         <div class="table-responsive">
                           <table class="table table-striped"><tbody><tr>
                             <td><img src="{% static 'imgs/green.jpg' %}" alt="Good" /></td>
-                            <td>辨識結果：{{rate}}%</td>
+                            <td>Validation result：{{rate}}%</td>
                           </tr></tbody></table>
                         </div>
                       </div>
@@ -33,7 +40,7 @@
                         <div class="table-responsive">
                           <table class="table table-striped"><tbody><tr>
                             <td><img src="{% static 'imgs/red.jpg' %}" alt="Not Good" /></td>
-                            <td>辨識結果：{{rate}}%</td>
+                            <td>Validation result：{{rate}}%</td>
                           </tr></tbody></table>
                         </div>
                       </div>
@@ -43,43 +50,43 @@
                     <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
                       <div class="table-responsive">
                         <table class="table table-striped"><tbody><tr><td>
-                          親愛的用戶您好：<br/>
+                          Dear customer:<br/>
                           {% if result == '1' %}
-                          以上偵測結果註記如下，以下資料僅供參考。<br/>
-                          「<span style="color:red;">紅燈</span>」：偵測結果在以往違規案例中涉及相關誇大不實用語或有誤導趨向之意。<br/>
-                          「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
+                          The validation result above is for your reference.<br/>
+                          「<span style="color:red;">Red light</span>」：The advertisement might be unlawful.<br/>
+                          「<span style="color:red;">Red text</span>」：The words might be risky.<br/>
                           {% endif %}
                           <br/>
-                          辨識結果如下：<br/>
+                          Validation result:<br/>
                           {% if result == '0' %}
-                            70%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
+                            less than 70% => 「<span style="color:green;">Congratulation!</span>」Your advertisement might be lawful.<br/>
                           {% elif result == '1' %}
-                            70%  以上 => 「<span style="color:red;">危險!! </span>」您的廣告文字中已在違規案例中出現過，請務必特別小心。<br/>
+                            more than 70% => 「<span style="color:red;">Risky!! </span>」Your advertisement might be unlawful, please be careful.<br/>
                           {% endif %}
                           <br/>
-                          關於您的廣告文字辨識後結果，如有任何疑問或需進一步專業諮詢，歡迎您來電洽詢或來信詢問。<br/>
-                          電話:(02)23771858分機○○○<br/>
-                          信箱: angel.lin@zhongyinlawyer.com.tw<br/>
+                          If you have further inquiry, please contact us.<br/>
+                          Phone:(02)23771858 ext:○○○<br/>
+                          Email: angel.lin@zhongyinlawyer.com.tw<br/>
                         </td></tr></tbody></table>
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6 col-md-offset-3 col-sm6-6 col-sm-offset-3 ">
-                        <form action="{% url 'inquiry' %}" method="post" class="form-inline formImg" role="form">
+                        <form action="{% url 'inquiryEng' %}" method="post" class="form-inline formImg" role="form">
                             {% csrf_token %}
                             <input type="hidden" name="result" value="{{original_nc}}">
                             <input type="hidden" name="keywords" value="{{keywords}}">
-                          <button type="submit" class="btn btn-info btn-fill submitImg">網站詢問</button>
+                          <button type="submit" class="btn btn-info btn-fill submitImg">Inquiry from website</button>
                           <br/><br/>
                         </form>
-                        <form action="{% url 'pdf' %}" method="post" class="form-inline" role="form">
+                        <form action="{% url 'pdfEng' %}" method="post" class="form-inline" role="form">
                             {% csrf_token %}
                             <input type="hidden" name="original" value="{{original_nc}}">
                             <input type="hidden" name="keywords" value="{{keywords}}">
                             <input type="hidden" name="result" value="{{result}}">
                             <input type="hidden" name="rate" value="{{rate}}">
-                          <button type="submit" class="btn btn-success btn-fill">下載PDF檔</button>
+                          <button type="submit" class="btn btn-success btn-fill">PDF report</button>
                           <br/><br/>
                         </form>
                     </div>

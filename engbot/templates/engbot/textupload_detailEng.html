@@ -1,0 +1,73 @@
+{% extends "base_generic_db.html" %}
+{% block title %}<title>Validation result</title>{% endblock %}
+{% block navbar %}
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"><i class="far fa-images fa-lg"></i>&nbsp AI Validation Backend Site</a>
+  </div>
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar-right">
+      {% if user.is_authenticated %}
+        <!--<li>User: {{ user.get_username }}</li>-->
+        <li><a href="{% url 'logout'%}">Logout</a></li>
+      {% endif %}
+      <li><a href="https://www.openaifab.com" target="_blank"><i class="fas fa-copyright fa-lg"></i>&nbsp 開源智造 Open AI Fab Inc.</a></li>
+    </ul>
+  </div>
+{% endblock %}
+{% block sidebar %}
+  <ul class="nav nav-sidebar">
+    <li class="active"><a href="{% url 'textupload_listEng' %}"><i class="fas fa-list fa-lg"></i>&nbsp All Validations</a></li>
+    <li><a href="{% url 'inquiry_listEng' %}"><i class="fas fa-list fa-lg"></i>&nbsp Inquiry List</a></li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-header">Validation Result</h1>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Date</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{textuploadeng.pk}}</td>
+              <td>{{textuploadeng.date_of_upload}}</td>
+              {% if textuploadeng.result == '0' %}
+                <td>Lawful</td>
+              {% else %}
+                <td>Unlawful</td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Content</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{textuploadeng.usertext_eng|safe}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><a href="{% url 'textupload_listEng' %}">Back to list</a></p>
+    </div>
+{% endblock %}

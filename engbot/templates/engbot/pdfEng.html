@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Validation Report</title>
+        <style type="text/css">
+            @font-face {
+              font-family: Times;
+              /* src: url("/home/r94943024/apps/django/django_projects/ai_text_bot/mingliu.ttc"); */
+              src: url("/Users/JeremyLai/django_projects/ai_text_bot/mingliu.ttc");
+            }
+            body {
+                font-weight: 200;
+                font-size: 14px;
+                font-family: Times;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+        </style>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <p class='title'>Validation Report</p>
+            </div>
+        <div>
+        <div class='details'>
+            Date: {{today}}<br/>
+            Advertisement Content:<br/>
+            {% for item in original %} {{item|safe}}<br/> {% endfor %}
+            <br/>
+            {% if result == '0' %}
+              Result:  lawful<br/>
+            {% elif result == '1' %}
+              Result:  unlawful<br/>
+            {% endif %}
+            Validation result: {{rate}}%<br/>
+            <hr class='hrItem' />
+            Dear customer：<br/>
+            {% if result == '1' %}
+              The validation result above is for your reference.<br/>
+              「<span style="color:red;">Red light</span>」：The advertisement might be unlawful.<br/>
+              「<span style="color:red;">Red text</span>」：The words might be risky.<br/>
+            {% endif %}
+            <br/>
+            Validation result:<br/>
+            {% if result == '0' %}
+              less than 70%  => 「<span style="color:green;">Congratulation!</span>」Your advertisement might be lawful.<br/>
+            {% elif result == '1' %}
+              more than 70%  => 「<span style="color:red;">Risky!! </span>」Your advertisement might be unlawful, please be careful.<br/>
+            {% endif %}
+            <br/>
+            If you have further inquiry, please contact us.<br/>
+            Phone:(02)23771858 ext:○○○<br/>
+            Email: angel.lin@zhongyinlawyer.com.tw<br/>
+            <hr class='hrItem' />
+        </div>
+    </div>
+    </body>
+</html>

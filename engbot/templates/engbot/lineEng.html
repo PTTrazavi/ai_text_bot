@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>AI Validation</title>{% endblock %}
+{% block navbar %}
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'text_validationEng' %}"><i class="fas fa-home fa-lg"></i>Home</a></li>
+  </ul>
+</div><!-- /.navbar-collapse -->
+{% endblock %}
+{% block content %}
+  <h1 class="logo cursive">Your inquiry is sent successfully</h1>
+  <!--  H1 can have 2 designs: "logo" and "logo cursive"           -->
+{% endblock %}

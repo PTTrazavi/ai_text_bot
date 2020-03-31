@@ -31,6 +31,7 @@
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid" id="topbar">
+      {% block navbar %}
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -49,6 +50,7 @@
             <li><a href="https://www.openaifab.com" target="_blank"><i class="fas fa-copyright fa-lg"></i>&nbsp 開源智造 Open AI Fab Inc.</a></li>
           </ul>
         </div>
+      {% endblock %}
       </div>
     </nav>
 
