@@ -3,9 +3,16 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 class UploadtextForm(forms.Form):
-    usertext = forms.CharField(label="", label_suffix="", initial="",
+    company = forms.CharField(label="", label_suffix="", initial="請輸入公司名稱",
+                                strip=True, min_length=1,
+                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
+    usertext = forms.CharField(label="", label_suffix="", initial="請輸入廣告內容",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':12, 'cols':14}))
+
+    def clean_company(self):
+        data = self.cleaned_data['company']
+        return data
 
     def clean_usertext(self):
         data = self.cleaned_data['usertext']

@@ -4,6 +4,7 @@ from django.urls import reverse
 #import os
 
 class Textupload(models.Model):
+    company = models.CharField(max_length=64,null=True)
     usertext = models.TextField()
     result = models.CharField(max_length=8)
     date_of_upload = models.DateTimeField(null=True, blank=True)
@@ -22,6 +23,9 @@ class Inquiry(models.Model):
     usertext = models.TextField()
     message = models.TextField()
     date_of_inquiry = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        permissions = (("can_check_backend", "can log in backend site"),)
 
     def __str__(self):
         return self.usertext
