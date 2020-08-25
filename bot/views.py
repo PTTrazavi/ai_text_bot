@@ -41,6 +41,7 @@ def result(request):
         if form.is_valid():
             text_by_user = form.cleaned_data['usertext']
             company_name = form.cleaned_data['company']
+            product_name = form.cleaned_data['product']
             date_of_upload = str(datetime.datetime.today())
             #process the text to judge if it is legal
             #result = texttool(text_by_user)
@@ -52,10 +53,12 @@ def result(request):
             for word in keywords:
                 text_by_user = text_by_user.replace(word, r_b + word + r_a)
 
-            txt = Textupload(company=str(company_name), usertext=text_by_user, result=str(result), date_of_upload = date_of_upload)
+            txt = Textupload(company=str(company_name), product=str(product_name),usertext=text_by_user, result=str(result), date_of_upload = date_of_upload)
             txt.save()
 
             content = {
+                'company': txt.company,
+                'product': txt.product,
                 'original': txt.usertext,
                 'result': txt.result,
                 'rate': round(rate * 100, 2),
@@ -71,13 +74,28 @@ from django.utils.safestring import SafeString
 @login_required
 def inquiry(request):
     if request.method == 'POST':
+        company = request.POST.get('company')
+        product = request.POST.get('product')
+        original = request.POST.get('original')
         result = request.POST.get('result')
         keywords = request.POST.get('keywords')
 
-        form = InquiryForm(initial={'usertext':result, 'keywords': keywords})
+        form = InquiryForm(initial={'company':company, 'product':product,
+                        'usertext':original, 'keywords': keywords})
+
+        #add red keywords
+        original_c = original
+        if len(keywords) > 2:
+            keywords = keywords[1:-1].split(',')
+        r_b = '<span style="color:red;">'
+        r_a = '</span>'
+        for word in keywords:
+            original_c = original_c.replace(word, r_b + word + r_a)
 
         content = {
             'form': form,
+            'result': result,
+            'original_c': original_c
         }
         return render(request, 'bot/inquiry.html', content)
 
@@ -89,6 +107,7 @@ def line(request):
         # Check if the form is valid:
         if form.is_valid():
             company = form.cleaned_data['company']
+            product = form.cleaned_data['product']
             contact = form.cleaned_data['contact']
             phone = form.cleaned_data['phone']
             fax= form.cleaned_data['fax']
@@ -107,7 +126,7 @@ def line(request):
 
             date_of_inquiry = str(datetime.datetime.today())
 
-            inquiry = Inquiry(company = company, contact = contact, phone = phone,
+            inquiry = Inquiry(company = company, product = product, contact = contact, phone = phone,
                                 fax = fax, usertext = usertext, message = message,
                                 date_of_inquiry = date_of_inquiry)
             inquiry.save()
@@ -121,6 +140,8 @@ def line(request):
 from .util import render_to_pdf
 @login_required
 def pdf(request):
+    company = request.POST.get('company')
+    product = request.POST.get('product')
     original = request.POST.get('original')
     result = request.POST.get('result')
     rate = request.POST.get('rate')
@@ -139,6 +160,8 @@ def pdf(request):
 
     data = {
         'today': datetime.date.today(),
+        'company': company,
+        'product': product,
         'original': original,
         'result': result,
         'rate': rate,

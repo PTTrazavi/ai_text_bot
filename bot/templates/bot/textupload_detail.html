@@ -18,6 +18,7 @@
               <th>編號</th>
               <th>時間</th>
               <th>公司</th>
+              <th>產品</th>
               <th>結果</th>
             </tr>
           </thead>
@@ -26,6 +27,7 @@
               <td>{{textupload.pk}}</td>
               <td>{{textupload.date_of_upload}}</td>
               <td>{{textupload.company}}</td>
+              <td>{{textupload.product}}</td>
               {% if textupload.result == '0' %}
                 <td>合格</td>
               {% else %}

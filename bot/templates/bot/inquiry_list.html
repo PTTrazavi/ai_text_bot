@@ -19,6 +19,7 @@
               <th>編號</th>
               <th>時間</th>
               <th>公司</th>
+              <th>產品</th>
               <th>聯絡人</th>
               <th>內容</th>
               <th>訊息</th>
@@ -30,6 +31,7 @@
               <td><a href="{{inquiry.get_absolute_url}}">{{inquiry.pk}}</a></td>
               <td>{{inquiry.date_of_inquiry}}</td>
               <td>{{inquiry.company}}</td>
+              <td>{{inquiry.product}}</td>
               <td>{{inquiry.contact}}</td>
               <td>{{inquiry.usertext|slice:"0:15"}} ...</td>
               <td>{{inquiry.message|slice:"0:15"}} ...</td>

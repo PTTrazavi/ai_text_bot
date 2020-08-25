@@ -6,12 +6,19 @@ class UploadtextForm(forms.Form):
     company = forms.CharField(label="", label_suffix="", initial="請輸入公司名稱",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
+    product = forms.CharField(label="", label_suffix="", initial="請輸入產品名稱",
+                                strip=True, min_length=1,
+                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
     usertext = forms.CharField(label="", label_suffix="", initial="請輸入廣告內容",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':12, 'cols':14}))
 
     def clean_company(self):
         data = self.cleaned_data['company']
+        return data
+
+    def clean_product(self):
+        data = self.cleaned_data['product']
         return data
 
     def clean_usertext(self):
@@ -26,7 +33,10 @@ class UploadtextForm(forms.Form):
 class InquiryForm(forms.Form):
     company = forms.CharField(label="公司名稱", label_suffix="：", initial="",
                                 strip=True, min_length=1,
-                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
+                                widget=forms.Textarea(attrs={'readonly':True,'class':'form-control transparent','rows':1, 'cols':8}))
+    product = forms.CharField(label="產品名稱", label_suffix="：", initial="",
+                                strip=True, min_length=1,
+                                widget=forms.Textarea(attrs={'readonly':True,'class':'form-control transparent','rows':1, 'cols':8}))
     contact = forms.CharField(label="聯絡人", label_suffix="：", initial="",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
@@ -38,7 +48,8 @@ class InquiryForm(forms.Form):
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
     usertext = forms.CharField(label="辨識結果", label_suffix="：", initial="",
                                 strip=True, min_length=1,
-                                widget=forms.Textarea(attrs={'readonly':True,'class':'form-control transparent','rows':6, 'cols':10}))
+                                widget=forms.HiddenInput())
+                                #widget=forms.Textarea(attrs={'readonly':True,'class':'form-control transparent','rows':6, 'cols':10}))
     message = forms.CharField(label="訊息內容", label_suffix="：", initial="",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':6, 'cols':10}))
@@ -48,6 +59,9 @@ class InquiryForm(forms.Form):
 
     def clean_company(self):
         data = self.cleaned_data['company']
+        return data
+    def clean_product(self):
+        data = self.cleaned_data['product']
         return data
     def clean_contact(self):
         data = self.cleaned_data['contact']

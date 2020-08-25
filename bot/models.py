@@ -5,6 +5,7 @@ from django.urls import reverse
 
 class Textupload(models.Model):
     company = models.CharField(max_length=64,null=True)
+    product = models.CharField(max_length=64,null=True)
     usertext = models.TextField()
     result = models.CharField(max_length=8)
     date_of_upload = models.DateTimeField(null=True, blank=True)
@@ -17,6 +18,7 @@ class Textupload(models.Model):
 
 class Inquiry(models.Model):
     company = models.CharField(max_length=64)
+    product = models.CharField(max_length=64,null=True)
     contact = models.CharField(max_length=16)
     phone = models.CharField(max_length=16)
     fax = models.CharField(max_length=16)
