@@ -25,7 +25,7 @@
                         <div class="table-responsive">
                           <table class="table table-striped"><tbody><tr>
                             <td><img src="{% static 'imgs/green.jpg' %}" alt="Good" /></td>
-                            <td>辨識結果：{{rate}}%</td>
+                            <td>違規風險：{{rate}}%</td>
                           </tr></tbody></table>
                         </div>
                       </div>
@@ -36,7 +36,7 @@
                         <div class="table-responsive">
                           <table class="table table-striped"><tbody><tr>
                             <td><img src="{% static 'imgs/red.jpg' %}" alt="Not Good" /></td>
-                            <td>辨識結果：{{rate}}%</td>
+                            <td>違規風險：{{rate}}%</td>
                           </tr></tbody></table>
                         </div>
                       </div>
@@ -53,7 +53,7 @@
                           「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
                           {% endif %}
                           <br/>
-                          辨識結果如下：<br/>
+                          違規風險如下：<br/>
                           {% if result == '0' %}
                             70%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
                           {% elif result == '1' %}

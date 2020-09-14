@@ -61,7 +61,7 @@
             {% elif result == '1' %}
               結果:  違規<br/>
             {% endif %}
-            辨識結果: {{rate}}%<br/>
+            違規風險: {{rate}}%<br/>
             <hr class='hrItem' />
             親愛的用戶您好：<br/>
             {% if result == '1' %}
@@ -70,7 +70,7 @@
               「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
             {% endif %}
             <br/>
-            辨識結果如下：<br/>
+            違規風險如下：<br/>
             {% if result == '0' %}
               70%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
             {% elif result == '1' %}
