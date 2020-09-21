@@ -20,6 +20,7 @@ class Inquiry(models.Model):
     company = models.CharField(max_length=64)
     product = models.CharField(max_length=64,null=True)
     contact = models.CharField(max_length=16)
+    email = models.CharField(max_length=64,null=True)
     phone = models.CharField(max_length=16)
     fax = models.CharField(max_length=16)
     usertext = models.TextField()

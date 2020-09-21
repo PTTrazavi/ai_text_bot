@@ -7,7 +7,6 @@ from wordcloud import WordCloud, ImageColorGenerator
 import matplotlib.pyplot as plt
 import jieba
 import itertools
-from ckiptagger import data_utils, construct_dictionary, WS, POS, NER
 
 def JeibaCutWords(input_df):
     cols = ["Description"]  # 決定要選取那些列，當作文字來源(可複選)
@@ -46,68 +45,6 @@ def JeibaCutWords(input_df):
         corpus_cutted.append(one_line_cutted)  # 斷詞後的每篇廣告
         corpus_class.append(input_df.loc[row, 'Class'])
         corpus_id.append(input_df.loc[row, 'ID'])
-
-    # 收集完的資料存成dataframe
-    temp_data = {"id": corpus_id,
-                 "sentence": corpus_cutted,
-                 "class": corpus_class
-                }
-    temp_df = pd.DataFrame(temp_data)
-    return temp_df
-
-
-def CkipCutWords(input_df):
-    ws = WS("./Ckip")
-    pos = POS("./Ckip")
-    ner = NER("./Ckip")
-
-    cols = ["Description"]  # 決定要選取那些列，當作文字來源(可複選)
-    corpus_cutted = list([])  # 儲存斷詞後的句子
-    corpus_class = list([]) # 句子的分類
-    corpus_id = list([]) # 句子的編號
-
-    # 設定停用詞
-    with open(r'./Ckip/stop_words.txt', 'r', encoding='utf8') as f:
-        stops = f.read().split('\n')
-
-    for row_index, row in enumerate(input_df.index):
-        input_list = list([])
-        one_line_cutted = list([])
-        #print("[%d]" % (row))
-        temp_str = str()
-        for col_index, column in enumerate(cols):
-            sentence = input_df.loc[row, column]  # 選取一列
-            temp_str = temp_str + sentence + "," # 欄位資料合併
-        #print("合併後句子: %s" % (temp_str))
-        input_list.append(temp_str)
-
-        #
-        # CKIP斷詞
-        #
-        sentence_cutted = ws(input_list,
-                           # sentence_segmentation=True, # To consider delimiters
-                           segment_delimiter_set = {"「", "」", ",", "。", ":", "?", "!", ";", "…"},
-                           # This is the defualt set of delimiters
-                           # recommend_dictionary = dictionary1,
-                           # words in this dictionary are encouraged
-                           # coerce_dictionary = dictionary2,
-                           # words in this dictionary are forced
-                          )
-        #print(sentence_cutted)  # 斷詞後的每篇廣告
-
-        for _, word in enumerate(sentence_cutted[0]):
-            #print("單詞：", word)
-            if word not in stops:
-                one_line_cutted.append(word)
-
-        #print(one_line_cutted)
-        corpus_cutted.append(one_line_cutted)  # 斷詞後的每篇廣告
-        corpus_class.append(input_df.loc[row, 'Class'])
-        corpus_id.append(input_df.loc[row, 'ID'])
-
-    del ws
-    del pos
-    del ner
 
     # 收集完的資料存成dataframe
     temp_data = {"id": corpus_id,
@@ -189,45 +126,3 @@ def ShowWordCloud(input_df):
     PlotWordCloud(legal_terms)
     print("違法廣告文字雲:")
     PlotWordCloud(violate_terms)
-
-
-#%matplotlib inline
-#from matplotlib import rcParams
-
-
-def plot_confusion_matrix(cm, classes,
-                          normalize=False,
-                          title='Confusion matrix',
-                          cmap=plt.cm.Blues):
-    """
-    This function prints and plots the confusion matrix.
-    Normalization can be applied by setting `normalize=True`.
-    """
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-        print("Normalized confusion matrix")
-    else:
-        print('Confusion matrix, without normalization')
-
-    print(cm)
-
-    plt.figure(figsize=(8,4))
-    #rcParams['figure.figsize'] = (8.0, 4.0)
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-    tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes)
-
-    fmt = '.2f' if normalize else 'd'
-    thresh = cm.max() / 2.
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, format(cm[i, j], fmt),
-                 horizontalalignment="center",
-                 color="white" if cm[i, j] > thresh else "black")
-
-    plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-    plt.show()

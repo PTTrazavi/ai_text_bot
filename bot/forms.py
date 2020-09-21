@@ -40,6 +40,9 @@ class InquiryForm(forms.Form):
     contact = forms.CharField(label="聯絡人", label_suffix="：", initial="",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
+    email = forms.CharField(label="email", label_suffix="：", initial="",
+                                strip=True, min_length=1,
+                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
     phone = forms.CharField(label="電話", label_suffix="：", initial="",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
@@ -65,6 +68,9 @@ class InquiryForm(forms.Form):
         return data
     def clean_contact(self):
         data = self.cleaned_data['contact']
+        return data
+    def clean_email(self):
+        data = self.cleaned_data['email']
         return data
     def clean_phone(self):
         data = self.cleaned_data['phone']

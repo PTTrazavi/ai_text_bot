@@ -109,6 +109,7 @@ def line(request):
             company = form.cleaned_data['company']
             product = form.cleaned_data['product']
             contact = form.cleaned_data['contact']
+            email = form.cleaned_data['email']
             phone = form.cleaned_data['phone']
             fax= form.cleaned_data['fax']
             usertext = form.cleaned_data['usertext']
@@ -126,8 +127,8 @@ def line(request):
 
             date_of_inquiry = str(datetime.datetime.today())
 
-            inquiry = Inquiry(company = company, product = product, contact = contact, phone = phone,
-                                fax = fax, usertext = usertext, message = message,
+            inquiry = Inquiry(company = company, product = product, contact = contact, email = email,
+                                phone = phone, fax = fax, usertext = usertext, message = message,
                                 date_of_inquiry = date_of_inquiry)
             inquiry.save()
             #make message to send by LINE

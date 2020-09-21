@@ -11,4 +11,4 @@ class TextuploadAdmin(admin.ModelAdmin):
 
 @admin.register(Inquiry)
 class InquiryAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'date_of_inquiry', 'usertext', 'message', 'company', 'product', 'contact', 'phone', 'fax')
+    list_display = ('pk', 'date_of_inquiry', 'usertext', 'message', 'company', 'product', 'contact', 'email', 'phone', 'fax')
