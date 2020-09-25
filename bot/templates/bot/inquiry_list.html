@@ -13,6 +13,7 @@
     <div class="row">
       {% if inquiry_list %}
       <div class="table-responsive">
+        <a href="{% url 'inquiry_csv' %}"><button class="btn btn-success btn-fill">下載CSV檔</button></a>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -21,6 +22,7 @@
               <th>公司</th>
               <th>產品</th>
               <th>聯絡人</th>
+              <th>信箱</th>
               <th>內容</th>
               <th>訊息</th>
             </tr>
@@ -33,6 +35,7 @@
               <td>{{inquiry.company}}</td>
               <td>{{inquiry.product}}</td>
               <td>{{inquiry.contact}}</td>
+              <td>{{inquiry.email}}</td>
               <td>{{inquiry.usertext|slice:"0:15"}} ...</td>
               <td>{{inquiry.message|slice:"0:15"}} ...</td>
             </tr>

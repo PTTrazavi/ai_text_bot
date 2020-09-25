@@ -12,6 +12,8 @@ urlpatterns = [
     path('Alist/<int:pk>', views.textupload_detail.as_view(), name='textupload_detail'),
     path('Ilist/', views.inquiry_list.as_view(), name='inquiry_list'),
     path('Ilist/<int:pk>', views.inquiry_detail.as_view(), name='inquiry_detail'),
+    path('Alistcsv/', views.textupload_csv, name='textupload_csv'),
+    path('Ilistcsv/', views.inquiry_csv, name='inquiry_csv'),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

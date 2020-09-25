@@ -13,12 +13,14 @@
     <div class="row">
       {% if textupload_list %}
       <div class="table-responsive">
+        <a href="{% url 'textupload_csv' %}"><button class="btn btn-success btn-fill">下載CSV檔</button></a>
         <table class="table table-striped">
           <thead>
             <tr>
               <th>編號</th>
               <th>時間</th>
               <th>公司</th>
+              <th>信箱</th>
               <th>產品</th>
               <th>內容</th>
               <th>結果</th>
@@ -30,8 +32,9 @@
               <td><a href="{{textupload.get_absolute_url}}">{{textupload.pk}}</a></td>
               <td>{{textupload.date_of_upload}}</td>
               <td>{{textupload.company}}</td>
+              <td>{{textupload.email}}</td>
               <td>{{textupload.product}}</td>
-              <td>{{textupload.usertext|slice:"0:40"}} ...</td>
+              <td>{{textupload.usertext|slice:"0:36"}} ...</td>
               {% if textupload.result == '0' %}
                 <td>合格</td>
               {% else %}

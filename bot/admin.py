@@ -6,7 +6,7 @@ from .models import Textupload, Inquiry
 
 @admin.register(Textupload)
 class TextuploadAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'company', 'product', 'date_of_upload', 'usertext', 'result')
+    list_display = ('pk', 'company', 'email', 'phone', 'product', 'date_of_upload', 'usertext', 'result')
     #ordering = ['-date_of_upload']
 
 @admin.register(Inquiry)

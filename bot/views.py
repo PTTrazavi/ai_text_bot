@@ -4,6 +4,7 @@ from django.http import HttpResponseForbidden, HttpResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, permission_required
+import csv
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
@@ -41,6 +42,8 @@ def result(request):
         if form.is_valid():
             text_by_user = form.cleaned_data['usertext']
             company_name = form.cleaned_data['company']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
             product_name = form.cleaned_data['product']
             date_of_upload = str(datetime.datetime.today())
             #process the text to judge if it is legal
@@ -53,7 +56,9 @@ def result(request):
             for word in keywords:
                 text_by_user = text_by_user.replace(word, r_b + word + r_a)
 
-            txt = Textupload(company=str(company_name), product=str(product_name),usertext=text_by_user, result=str(result), date_of_upload = date_of_upload)
+            txt = Textupload(company=str(company_name), email=str(email), phone=str(phone),
+                            product=str(product_name), usertext=text_by_user, result=str(result),
+                            date_of_upload = date_of_upload)
             txt.save()
 
             content = {
@@ -118,11 +123,12 @@ def line(request):
             #red words process
             usertext_nc = usertext
             keywords = form.cleaned_data['keywords']
-            keywords = keywords[1:-1].split(',')
-            r_b = '<span style="color:red;">'
-            r_a = '</span>'
-            for word in keywords:
-                usertext = usertext.replace(word, r_b + word + r_a)
+            if len(keywords) > 2:
+                keywords = keywords[1:-1].split(',')
+                r_b = '<span style="color:red;">'
+                r_a = '</span>'
+                for word in keywords:
+                    usertext = usertext.replace(word, r_b + word + r_a)
             #red words process end here
 
             date_of_inquiry = str(datetime.datetime.today())
@@ -169,6 +175,35 @@ def pdf(request):
     }
     pdf = render_to_pdf('bot/pdf.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
+
+#download Textupload csv
+@login_required
+@permission_required('bot.can_check_backend')
+def textupload_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="textupload.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['公司', 'email', '電話', '產品', '廣告內容', '判斷結果', '日期'])
+    for row in Textupload.objects.all().values_list('company', 'email', 'phone', 'product', 'usertext', 'result', 'date_of_upload'):
+        writer.writerow(row)
+
+    return response
+
+#download Inquiry csv
+@login_required
+@permission_required('bot.can_check_backend')
+def inquiry_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="inquiry.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['公司', '產品', '聯絡人', 'email', '電話', '傳真', '廣告內容', '訊息', '日期'])
+    for row in Inquiry.objects.all().values_list('company', 'product', 'contact', 'email', 'phone', 'fax', 'usertext', 'message', 'date_of_inquiry'):
+        writer.writerow(row)
+
+    return response
+
 
 #####backend site views from here #####
 #all_list

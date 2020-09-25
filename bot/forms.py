@@ -6,6 +6,12 @@ class UploadtextForm(forms.Form):
     company = forms.CharField(label="", label_suffix="", initial="請輸入公司名稱",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
+    email = forms.CharField(label="", label_suffix="", initial="請輸入聯絡email",
+                                strip=True, min_length=1,
+                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
+    phone = forms.CharField(label="", label_suffix="", initial="請輸入聯絡電話",
+                                strip=True, min_length=1,
+                                widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
     product = forms.CharField(label="", label_suffix="", initial="請輸入產品名稱",
                                 strip=True, min_length=1,
                                 widget=forms.Textarea(attrs={'class':'form-control transparent','rows':1, 'cols':8}))
@@ -15,6 +21,14 @@ class UploadtextForm(forms.Form):
 
     def clean_company(self):
         data = self.cleaned_data['company']
+        return data
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data
+
+    def clean_phone(self):
+        data = self.cleaned_data['phone']
         return data
 
     def clean_product(self):

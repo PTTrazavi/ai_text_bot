@@ -5,6 +5,8 @@ from django.urls import reverse
 
 class Textupload(models.Model):
     company = models.CharField(max_length=64,null=True)
+    email = models.CharField(max_length=64,null=True)
+    phone = models.CharField(max_length=16,null=True)
     product = models.CharField(max_length=64,null=True)
     usertext = models.TextField()
     result = models.CharField(max_length=8)
