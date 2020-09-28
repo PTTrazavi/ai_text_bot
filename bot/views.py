@@ -180,13 +180,16 @@ def pdf(request):
 @login_required
 @permission_required('bot.can_check_backend')
 def textupload_csv(request):
-    response = HttpResponse(content_type='text/csv')
+    response = HttpResponse(content_type='text/csv; charset=utf-8')
     response['Content-Disposition'] = 'attachment; filename="textupload.csv"'
 
     writer = csv.writer(response)
+    # writer.writerow("\xEF\xBB\xBF") #prevent from messed up chinese
     writer.writerow(['公司', 'email', '電話', '產品', '廣告內容', '判斷結果', '日期'])
-    for row in Textupload.objects.all().values_list('company', 'email', 'phone', 'product', 'usertext', 'result', 'date_of_upload'):
-        writer.writerow(row)
+    # for row in Textupload.objects.all().values_list('company', 'email', 'phone', 'product', 'usertext', 'result', 'date_of_upload'):
+    for row in Textupload.objects.all():
+        row_item = [row.company, row.email, row.phone, row.product, row.usertext, "合格" if row.result=="0" else "違規", row.date_of_upload]
+        writer.writerow(row_item)
 
     return response
 
@@ -194,7 +197,7 @@ def textupload_csv(request):
 @login_required
 @permission_required('bot.can_check_backend')
 def inquiry_csv(request):
-    response = HttpResponse(content_type='text/csv')
+    response = HttpResponse(content_type='text/csv; charset=utf-8')
     response['Content-Disposition'] = 'attachment; filename="inquiry.csv"'
 
     writer = csv.writer(response)
