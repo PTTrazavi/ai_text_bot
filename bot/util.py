@@ -77,7 +77,7 @@ def jieba_validation(input_text):
     x_pred = np.array(x)
 
     # Load trained model and feed data to predict
-    model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../model/tf2_lstm_model')) #GCP
+    # model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../model/tf2_lstm_model')) #GCP
     model = tf.keras.models.load_model('./model/tf2_lstm_model')
     probability = model.predict(x_pred)
 
