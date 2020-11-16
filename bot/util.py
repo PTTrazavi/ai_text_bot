@@ -33,8 +33,7 @@ import pandas as pd
 from gensim.models import word2vec
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-from .OpenFabLibrary import JeibaCutWords
-from .OpenFabLibrary import AppendKeywordCheck
+from .OpenFabLibrary import JeibaCutWords, AppendKeywordCheck, relation_check
 
 #w2v = word2vec.Word2Vec.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../word2vec_model/zh.bin')) #GCP
 w2v = word2vec.Word2Vec.load('word2vec_model/zh.bin')
@@ -55,34 +54,42 @@ def jieba_validation(input_text):
                                 'Name':[ad_Name],
                                 'Description':[ad_Description],
                                 'Class':[ad_Class]})
-    # 斷詞處理
-    test_df = JeibaCutWords(test_data_df)
+    # check the rule first
+    rule_result = relation_check(input_text)
 
-    # 關鍵字檢查
-    test_df['keyword_flag'], keywords_list = AppendKeywordCheck(test_df)
-    # 選取多少詞來當作輸入
-    PICK_WORDS = 80  # 選前面80個詞當作輸入，這個長度要跟訓練模型的長度一樣
+    if rule_result is True: # 合法
+        keywords_list = []
+        probability = 0.2
+        return 0, probability, keywords_list
+    else:
+        # 斷詞處理
+        test_df = JeibaCutWords(test_data_df)
 
-    docs_pred_id = []
-    for doc in test_df['sentence']:
-        text = doc[:PICK_WORDS]
-        ids = [word2id_len]*PICK_WORDS
-        ids[:len(text)] = [word2id[w] if w in word2id else word2id_len for w in text] # <OOV> is 50101
-        docs_pred_id.append(ids)
+        # 關鍵字檢查
+        test_df['keyword_flag'], keywords_list = AppendKeywordCheck(test_df)
+        # 選取多少詞來當作輸入
+        PICK_WORDS = 80  # 選前面80個詞當作輸入，這個長度要跟訓練模型的長度一樣
 
-    # 轉換後的sequence合併到dataframe
-    test_df['sentence_seq'] = docs_pred_id
+        docs_pred_id = []
+        for doc in test_df['sentence']:
+            text = doc[:PICK_WORDS]
+            ids = [word2id_len]*PICK_WORDS
+            ids[:len(text)] = [word2id[w] if w in word2id else word2id_len for w in text] # <OOV> is 50101
+            docs_pred_id.append(ids)
 
-    x = test_df['sentence_seq'].tolist()
-    x_pred = np.array(x)
+        # 轉換後的sequence合併到dataframe
+        test_df['sentence_seq'] = docs_pred_id
 
-    # Load trained model and feed data to predict
-    # model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../model/tf2_lstm_model')) #GCP
-    model = tf.keras.models.load_model('./model/tf2_lstm_model')
-    probability = model.predict(x_pred)
+        x = test_df['sentence_seq'].tolist()
+        x_pred = np.array(x)
 
-    if probability < 0.5:  # 合法
-        keywords_list = []  # 合法廣告不用列出違規關鍵字
-        return 0, probability[0][0], keywords_list
-    else:  # 違法
-        return 1, probability[0][0], keywords_list
+        # Load trained model and feed data to predict
+        # model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../model/tf2_lstm_model')) #GCP
+        model = tf.keras.models.load_model('./model/tf2_lstm_model')
+        probability = model.predict(x_pred)
+
+        if probability < 0.5:  # 合法
+            keywords_list = []  # 合法廣告不用列出違規關鍵字
+            return 0, probability[0][0], keywords_list
+        else:  # 違法
+            return 1, probability[0][0], keywords_list

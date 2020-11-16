@@ -126,3 +126,15 @@ def ShowWordCloud(input_df):
     PlotWordCloud(legal_terms)
     print("違法廣告文字雲:")
     PlotWordCloud(violate_terms)
+
+def relation_check(input_text):
+  """
+  input_text: input ad description
+  result: True if both Name and Description are mentioned
+  """
+  #rule_df = pd.read_csv(open((os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/rules_20201116.csv')), 'r', encoding='utf8'), delimiter=',')
+  rule_df = pd.read_csv(open('./data/rules_20201116.csv', 'r', encoding='utf8'), delimiter=',')
+  for index, row in rule_df.iterrows():
+    if row['Name'] in input_text and row['Description'] in input_text:
+      return True
+  return False
