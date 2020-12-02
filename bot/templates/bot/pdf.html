@@ -58,6 +58,8 @@
             <br/>
             {% if result == '0' %}
               結果:  合格<br/>
+            {% elif result == '2' %}
+              結果:  注意<br/>
             {% elif result == '1' %}
               結果:  違規<br/>
             {% endif %}
@@ -68,11 +70,17 @@
               以上偵測結果註記如下，以下資料僅供參考。<br/>
               「<span style="color:red;">紅燈</span>」：偵測結果在以往違規案例中涉及相關誇大不實用語或有誤導趨向之意。<br/>
               「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
+            {% elif result == '2' %}
+              以上偵測結果註記如下，以下資料僅供參考。<br/>
+              「<span style="color:red;">黃燈</span>」：偵測結果在以往違規案例中涉及相關誇大不實用語或有誤導趨向之意。<br/>
+              「<span style="color:red;">紅字</span>」：偵測結果在以往違規案例中已出現過違規的相關字詞。<br/>
             {% endif %}
             <br/>
             違規風險如下：<br/>
             {% if result == '0' %}
-              70%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
+              50%  以下 => 「<span style="color:green;">恭喜您!</span>」您的廣告文字偵測結果大致上無違規字詞及用語。<br/>
+            {% elif result == '2' %}
+              51% ~ 69% => 「<span style="color:red;">注意!! </span>」您的廣告文字中已在違規案例中出現過，請務必注意。<br/>
             {% elif result == '1' %}
               70%  以上 => 「<span style="color:red;">危險!! </span>」您的廣告文字中已在違規案例中出現過，請務必特別小心。<br/>
             {% endif %}

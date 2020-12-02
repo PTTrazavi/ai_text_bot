@@ -32,8 +32,9 @@ import numpy as np
 import pandas as pd
 from gensim.models import word2vec
 from sklearn.metrics import confusion_matrix
+import random
 from sklearn.metrics import accuracy_score
-from .OpenFabLibrary import JeibaCutWords, AppendKeywordCheck, relation_check
+from .OpenFabLibrary import JeibaCutWords, AppendKeywordCheck, relation_check, bad_check, good_check
 
 #w2v = word2vec.Word2Vec.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../word2vec_model/zh.bin')) #GCP
 w2v = word2vec.Word2Vec.load('word2vec_model/zh.bin')
@@ -46,7 +47,6 @@ def jieba_validation(input_text):
     ad_ID = 0
     ad_Name = "測試產品"
     ad_Class = 0
-
     ad_Description = input_text
 
     # 單一廣告輸入
@@ -54,19 +54,27 @@ def jieba_validation(input_text):
                                 'Name':[ad_Name],
                                 'Description':[ad_Description],
                                 'Class':[ad_Class]})
-    # check the rule first
-    rule_result = relation_check(input_text)
+    # check the rules first
+    rela_rule = relation_check(input_text)
+    bad_rule = bad_check(input_text)
+    good_rule = good_check(input_text)
+    # 斷詞處理
+    test_df = JeibaCutWords(test_data_df)
+    # 關鍵字檢查
+    test_df['keyword_flag'], keywords_list = AppendKeywordCheck(test_df)
 
-    if rule_result is True: # 合法
+    if rela_rule is True: #合法
         keywords_list = []
-        probability = 0.2
+        probability = random.uniform(0.1, 0.3)
+        return 0, probability, keywords_list
+    elif bad_rule is True: #違法
+        probability = random.uniform(0.8, 0.98)
+        return 1, probability, keywords_list
+    elif good_rule is True: #合法
+        keywords_list = []
+        probability = random.uniform(0.1, 0.3)
         return 0, probability, keywords_list
     else:
-        # 斷詞處理
-        test_df = JeibaCutWords(test_data_df)
-
-        # 關鍵字檢查
-        test_df['keyword_flag'], keywords_list = AppendKeywordCheck(test_df)
         # 選取多少詞來當作輸入
         PICK_WORDS = 80  # 選前面80個詞當作輸入，這個長度要跟訓練模型的長度一樣
 
@@ -88,8 +96,10 @@ def jieba_validation(input_text):
         model = tf.keras.models.load_model('./model/tf2_lstm_model')
         probability = model.predict(x_pred)
 
-        if probability < 0.5:  # 合法
+        if probability <= 0.5:  # 合法 綠燈
             keywords_list = []  # 合法廣告不用列出違規關鍵字
             return 0, probability[0][0], keywords_list
-        else:  # 違法
+        elif probability < 0.7: # 黃燈 2
+            return 2, probability[0][0], keywords_list
+        else:  # 違法 紅燈
             return 1, probability[0][0], keywords_list
