@@ -1,0 +1,12 @@
+Django==2.2.4
+line-bot-sdk==1.13.0
+pandas==0.25.1
+tensorflow==1.14.0
+ckiptagger==0.1.0
+gensim==3.8.1
+jieba==0.42.1
+numpy==1.17.2
+scikit-learn==0.22.1
+wordcloud==1.6.0
+xhtml2pdf==0.2.4
+googletrans

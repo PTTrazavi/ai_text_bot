@@ -36,6 +36,10 @@ import random
 from sklearn.metrics import accuracy_score
 from .OpenFabLibrary import JeibaCutWords, AppendKeywordCheck, relation_check, bad_check, good_check
 
+# the model is loaded only once, and not every time the endpoint is called
+from .apps import BotConfig
+from tensorflow.python.keras.backend import set_session
+
 #w2v = word2vec.Word2Vec.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../word2vec_model/zh.bin')) #GCP
 w2v = word2vec.Word2Vec.load('word2vec_model/zh.bin')
 word2id = {k:i for i, k in enumerate(w2v.wv.vocab.keys())}
@@ -93,8 +97,13 @@ def jieba_validation(input_text):
 
         # Load trained model and feed data to predict
         # model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../model/tf2_lstm_model')) #GCP
-        model = tf.keras.models.load_model('./model/tf2_lstm_model')
-        probability = model.predict(x_pred)
+        # model = tf.keras.models.load_model('./model/tf2_lstm_model')
+        # probability = model.predict(x_pred)
+
+        # the model is loaded only once, and not every time the endpoint is called
+        with BotConfig.Graph.as_default():
+            set_session(BotConfig.Sess)
+            probability = BotConfig.model.predict(x_pred)
 
         if probability <= 0.5:  # 合法 綠燈
             keywords_list = []  # 合法廣告不用列出違規關鍵字
